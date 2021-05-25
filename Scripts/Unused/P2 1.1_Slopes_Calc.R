@@ -97,11 +97,11 @@ colnames(slopes.rapid)[8]<-"Stomatal_Conductance_Wet"
 
 
 #WaterContent_Dry
-fullmod.wc <- lmer(Water_Content ~ Site.Lat*Year*Drought + (1|Family) + (1|Block), data=y5)
+fullmod.wc <- lmer(Water_Content ~ Site.Lat*Year*Drought + (1|Family) + (1|Block), data=y7)
 vis_wc_D<-visreg(fullmod.wc, xvar="Year", by="Site.Lat", cond=list(Drought="D"))
-fit_wc_D<-vis_gs_D$fit
+fit_wc_D<-vis_wc_D$fit
 for (i in 1:12){
-  fit_wc_D_tmp<-fit_gs_D %>% filter(Site.Lat==flower_dry_pop[i])
+  fit_wc_D_tmp<-fit_wc_D %>% filter(Site.Lat==flower_dry_pop[i])
   lm_wc_D<-lm(visregFit~Year, data=fit_wc_D_tmp)
   summary_wc_D<-summary(lm_wc_D)
   slopes.rapid[i,9]<-summary_wc_D$coefficients[2,1]
@@ -109,14 +109,13 @@ for (i in 1:12){
 colnames(slopes.rapid)[9]<-"Water_Content_Dry"
 
 #WaterContent_Wet
-#fullmod.wc <- lmer(Water_Content ~ Site.Lat*Year*Drought + (1|Family) + (1|Block), data=y5)
 vis_wc_W<-visreg(fullmod.wc, xvar="Year", by="Site.Lat", cond=list(Drought="W"))
 fit_wc_W<-vis_wc_W$fit
 for (i in 1:12){
-  fit_wc_W_tmp<-fit_gs_D %>% filter(Site.Lat==flower_dry_pop[i])
+  fit_wc_W_tmp<-fit_wc_W %>% filter(Site.Lat==flower_dry_pop[i])
   lm_wc_W<-lm(visregFit~Year, data=fit_wc_W_tmp)
-  summary_wc_D<-summary(lm_wc_W)
-  slopes.rapid[i,10]<-summary_wc_D$coefficients[2,1]
+  summary_wc_W<-summary(lm_wc_W)
+  slopes.rapid[i,10]<-summary_wc_W$coefficients[2,1]
 }
 colnames(slopes.rapid)[10]<-"Water_Content_Wet"
 

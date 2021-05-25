@@ -1,0 +1,11 @@
+Variable1,Variable2,Comparison,North,Centre,South,All
+Experiment_Date,SLA,df_sla,,,,
+Experiment_Date,Water_Content,df_wc,,,,
+Experiment_Date,Assimilation,df_a,,,,
+Experiment_Date,Stomatal_Conductance,df_gs,,,,
+SLA,Assimilation,sla_a,,,,
+Stomatal_Conductance,SLA,gs_sla,,,,
+Water_Content,SLA,wc_sla,,,,
+Water_Content,Assimilation,wc_a,,,,
+Water_Content,Stomatal_Conductance,wc_gs,,,,
+Stomatal_Conductance,Assimilation,gs_a,,,,

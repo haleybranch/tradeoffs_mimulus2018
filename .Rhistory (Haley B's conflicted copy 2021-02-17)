@@ -1,0 +1,512 @@
+geom_segment(aes(x=0, y=0, xend=-3, yend=2.284833241)) + #stomatal conductance
+geom_segment(aes(x=0, y=0, xend=-3, yend=2.151326351)) # assimilation
+b +
+geom_segment(aes(x=0, y=0, xend = -3, yend = -2.20086205))+ #flowering time
+geom_segment(aes(x=0, y=0, xend=-3, yend=-1.836009314)) + #SLA
+geom_segment(aes(x=0, y=0, xend=4, yend=1.17845849)) + #water content
+geom_segment(aes(x=0, y=0, xend=-3, yend=2.284833241)) + #stomatal conductance
+geom_segment(aes(x=0, y=0, xend=-3, yend=2.151326351)) # assimilation
+# PCA
+library(tidyverse)
+library(vegan)
+library(devtools)
+library("factoextra")
+# Read in pre and peak datasets
+pre <- read.csv("Data/pre.csv")
+peak <- read.csv("Data/peak.csv")
+install.packages("Morpho")
+# Calculate angle
+library(Morpho)
+x<-c(0,1)
+y<-c(-1,0)
+angle.calc(x,y)
+?angle.calc
+library(Morpho)
+library(Morpho)
+dot <- x1*x2 + y1*y2      # dot product between [x1, y1] and [x2, y2]
+det <- x1*y2 - y1*x2      # determinant
+angle <- atan2(det, dot)  # atan2(y, x) or atan2(sin, cos)
+angle
+# Calculate angle
+# Modified from https://stackoverflow.com/questions/14066933/direct-way-of-computing-clockwise-angle-between-2-vectors/16544330#16544330
+x<-c(0,1)
+y<-c(-1,0)
+dot <- x1*x2 + y1*y2      # dot product between [x1, y1] and [x2, y2]
+det <- x1*y2 - y1*x2      # determinant
+angle <- atan2(det, dot)  # atan2(y, x) or atan2(sin, cos)
+angle
+x1 <- 0
+y1 <- 1
+x2 <- -1
+y2 <- 0
+dot <- x1*x2 + y1*y2      # dot product between [x1, y1] and [x2, y2]
+det <- x1*y2 - y1*x2      # determinant
+angle <- atan2(det, dot)  # atan2(y, x) or atan2(sin, cos)
+angle
+install.packages("NISTunits", dependencies = TRUE)
+library(NISTunits)
+NISTradianTOdeg(angle)
+x1 <- 0
+y1 <- 1
+x2 <- 1
+y2 <- 0
+dot <- x1*x2 + y1*y2      # dot product between [x1, y1] and [x2, y2]
+det <- x1*y2 - y1*x2      # determinant
+angle <- atan2(det, dot)  # atan2(y, x) or atan2(sin, cos)
+angle
+NISTradianTOdeg(angle)
+# Calculate angle
+# Modified from https://stackoverflow.com/questions/14066933/direct-way-of-computing-clockwise-angle-between-2-vectors/16544330#16544330
+#Import libraries
+library(NISTunits)
+library(tidyverse)
+library(vegan)
+library(devtools)
+library("factoextra")
+#How to calculate angle in 360 deg with counterclockwise direction
+x1 <- 1
+y1 <- 0
+x2 <- 0
+y2 <- -1
+dot <- x1*x2 + y1*y2      # dot product between [x1, y1] and [x2, y2]
+det <- x1*y2 - y1*x2      # determinant
+angle <- atan2(det, dot)  # atan2(y, x) or atan2(sin, cos)
+angle
+NISTradianTOdeg(angle)
+x1 <- 1
+y1 <- 0
+x2 <- 0
+y2 <- 1
+#How to calculate angle in 360 deg with counterclockwise direction
+x1 <- 1
+y1 <- 0
+x2 <- 0.5
+y2 <- -0.5
+dot <- x1*x2 + y1*y2      # dot product between [x1, y1] and [x2, y2]
+det <- x1*y2 - y1*x2      # determinant
+angle <- atan2(det, dot)  # atan2(y, x) or atan2(sin, cos)
+angle
+NISTradianTOdeg(angle)
+#How to calculate angle in 360 deg with counterclockwise direction
+x1 <- 1
+y1 <- 0
+x2 <- -0.5
+y2 <- -0.5
+dot <- x1*x2 + y1*y2      # dot product between [x1, y1] and [x2, y2]
+det <- x1*y2 - y1*x2      # determinant
+angle <- atan2(det, dot)  # atan2(y, x) or atan2(sin, cos)
+angle
+NISTradianTOdeg(angle)
+# Calculate angle
+# Modified from https://stackoverflow.com/questions/14066933/direct-way-of-computing-clockwise-angle-between-2-vectors/16544330#16544330
+#Import libraries
+library(NISTunits)
+library(tidyverse)
+library(vegan)
+library(devtools)
+library("factoextra")
+#How to calculate angle in 360 deg with counterclockwise direction
+x1 <- 1
+y1 <- 0
+x2 <- -0.5
+y2 <- -0.5
+dot <- x1*x2 + y1*y2      # dot product between [x1, y1] and [x2, y2]
+det <- x1*y2 - y1*x2      # determinant
+angle <- atan2(det, dot)  # atan2(y, x) or atan2(sin, cos)
+angle
+NISTradianTOdeg(angle)
+##########################################
+#Permutation
+# Read in pre and peak datasets
+pre <- read.csv("Data/pre.csv") ; peak <- read.csv("Data/peak.csv")
+#new Time columns
+pre$Time <- "Pre" ; peak$Time <- "Peak"
+#bind together
+all <- rbind(pre,peak)
+View(all)
+?permute
+?permute
+?permute
+names(all)
+modelr::permute(all,5,"Experiment_Date","SLA", "Water_Content","Assimilation","Stomatal_Conductance",
+.id=".id")
+all.per<-modelr::permute(all,5,"Experiment_Date","SLA", "Water_Content","Assimilation","Stomatal_Conductance",
+.id=".id")
+str(all.per)
+?permute
+#shuffling
+set.seed(42)
+rows <- sample(nrow(all))
+all.shuf<- all[rows, ]
+View(all.shuf)
+pre.shuf <- all[1:624]
+post.shuf <- all[625:1320]
+pre.shuf <- all[1:624,]
+post.shuf <- all[625:1320,]
+View(all)
+pre <- na.omit(pre)
+pre <- na.omit(pre) ; peak <- na.omit(peak)
+# Read in pre and peak datasets
+pre <- read.csv("Data/pre.csv") ; peak <- read.csv("Data/peak.csv")
+pre <- na.omit(pre) ; peak <- na.omit(peak)
+#new Time columns
+pre$Time <- "Pre" ; peak$Time <- "Peak"
+#bind together
+all <- rbind(pre,peak)
+#shuffling
+set.seed(42)
+rows <- sample(nrow(all)) # randomize row indices
+all.shuf <- all[rows, ] # shuffle rows
+pre.shuf <- all[1:245,] # make random pre dataset
+post.shuf <- all[246:534,] # make random post dataset
+pc.pre <- prcomp(pre.shuf[,c("Experiment_Date","SLA","Water_Content","Stomatal_Conductance","Assimilation")], scale=T)
+pc.post <- prcomp(post.shuf[,c("Experiment_Date","SLA","Water_Content","Stomatal_Conductance","Assimilation")], scale=T)
+bioplot(pc.pre)
+bioplot(pc.post)
+# Calculate angle
+# Modified from https://stackoverflow.com/questions/14066933/direct-way-of-computing-clockwise-angle-between-2-vectors/16544330#16544330
+#Import libraries
+library(NISTunits)
+library(tidyverse)
+library(vegan)
+library(devtools)
+library("factoextra")
+bioplot(pc.pre)
+bioplot(pc.pre)
+pre <- read.csv("Data/pre.csv")
+View(pre)
+pre.N <-pre <- filter(pre, ID_Year== "S17_2011" | ID_Year== "S16_2010" | ID_Year== "S36_2011" | ID_Year== "S15_2010")
+pre$ID_Year
+pre.N <-pre <- filter(pre, ID_Year== "S17_2011" | ID_Year== "S16_2010" | ID_Year== "S36_2011" | ID_Year== "S15_2010")
+#PCAs comparing the pre vs peak for each group (N, C, S)
+library(tidyverse)
+pre.N <-pre <- filter(pre, ID_Year== "S17_2011" | ID_Year== "S16_2010" | ID_Year== "S36_2011" | ID_Year== "S15_2010")
+View(pre.N)
+pre.C <- pre <- filter(pre, ID_Year== "S10_2011" | ID_Year== "S08_2011"
+pre.C <- pre <- filter(pre, ID_Year== "S10_2011" | ID_Year== "S08_2011"
+| ID_Year=="S32_2010" | ID_Year== "S29_2010" | ID_Year== "S18_2010" )
+pre.C <- pre <- filter(pre, ID_Year== "S10_2011" | ID_Year== "S08_2011"  | ID_Year=="S32_2010" | ID_Year== "S29_2010" | ID_Year== "S18_2010" )
+pre.S <- pre <- filter(trait_cor, ID_Year=="S02_2011" | ID_Year=="S11_2011" | ID_Year=="S07_2011")
+pre.S <- pre <- filter(pre, ID_Year=="S02_2011" | ID_Year=="S11_2011" | ID_Year=="S07_2011")
+peak <- read.csv("Data/peak.csv")
+peak.N <- filter(peak, ID_Year== "S17_2015" | ID_Year== "S16_2016" | ID_Year== "S36_2015" | ID_Year== "S15_2015")
+peak.C <- filter(trait_cor, ID_Year== "S10_2014" | ID_Year== "S08_2013" | ID_Year=="S32_2014" | ID_Year== "S29_2015" | ID_Year== "S18_2014")
+peak.C <- filter(peak, ID_Year== "S10_2014" | ID_Year== "S08_2013" | ID_Year=="S32_2014" | ID_Year== "S29_2015" | ID_Year== "S18_2014")
+peak.S <- filter(trait_cor, ID_Year=="S02_2014" | ID_Year=="S11_2016" | ID_Year=="S07_2014")
+peak.S <- filter(peak, ID_Year=="S02_2014" | ID_Year=="S11_2016" | ID_Year=="S07_2014")
+pre <- read.csv("Data/pre.csv")
+pre$Time <- "Pre"
+pre.N <-pre <- filter(pre, ID_Year== "S17_2011" | ID_Year== "S16_2010" | ID_Year== "S36_2011" | ID_Year== "S15_2010")
+pre.C <- pre <- filter(pre, ID_Year== "S10_2011" | ID_Year== "S08_2011"  | ID_Year=="S32_2010" | ID_Year== "S29_2010" | ID_Year== "S18_2010" )
+pre.S <- pre <- filter(pre, ID_Year=="S02_2011" | ID_Year=="S11_2011" | ID_Year=="S07_2011")
+peak <- read.csv("Data/peak.csv")
+peak$Time <- "Peak"
+peak.N <- filter(peak, ID_Year== "S17_2015" | ID_Year== "S16_2016" | ID_Year== "S36_2015" | ID_Year== "S15_2015")
+peak.C <- filter(peak, ID_Year== "S10_2014" | ID_Year== "S08_2013" | ID_Year=="S32_2014" | ID_Year== "S29_2015" | ID_Year== "S18_2014")
+peak.S <- filter(peak, ID_Year=="S02_2014" | ID_Year=="S11_2016" | ID_Year=="S07_2014")
+library(Hmisc)
+pre.N <- select(pre.N, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+pre.C <- select(pre.C, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+pre.S <- select(pre.S, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+pre.N <- as.matrix(pre.N)
+rcorr(pre.N)
+pre.C <- select(pre.C, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+pre.S <- select(pre.S, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+pre.C <- as.matrix(pre.C)
+pre.S <- as.matrix(pre.S)
+rcorr(pre.C)
+rcorr(pre.C)
+pre.C <- as.matrix(pre.C)
+rcorr(pre.C)
+View(peak.C)
+View(peak.N)
+pre.C <- select(pre.C, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+pre <- read.csv("Data/pre.csv")
+pre.C <- pre <- filter(pre, ID_Year== "S10_2011" | ID_Year== "S08_2011"  | ID_Year=="S32_2010" | ID_Year== "S29_2010" | ID_Year== "S18_2010" )
+pre.C <- select(pre.C, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+pre.C <- as.matrix(pre.C)
+rcorr(pre.C)
+pre.S <- as.matrix(pre.S)
+rcorr(pre.S)
+pre.S <- pre <- filter(pre, ID_Year=="S02_2011" | ID_Year=="S11_2011" | ID_Year=="S07_2011")
+pre.S <- select(pre.S, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+pre.S <- as.matrix(pre.S)
+rcorr(pre.S)
+pre <- read.csv("Data/pre.csv")
+pre.S <- pre <- filter(pre, ID_Year=="S02_2011" | ID_Year=="S11_2011" | ID_Year=="S07_2011")
+pre.S <- select(pre.S, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+pre.S <- as.matrix(pre.S)
+rcorr(pre.S)
+peak.N <- select(peak.N, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+peak.C <- select(peak.C, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+peak.S <- select(peak.S, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+peak.N <- as.matrix(peak.N)
+rcorr(peak.N)
+peak.C <- as.matrix(peak.C)
+rcorr(peak.C)
+peak.S <- as.matrix(peak.S)
+rcorr(peak.S)
+# PCA of each region
+library(tidyverse)
+library(vegan)
+library(devtools)
+library("factoextra")
+pre <- read.csv("Data/pre.csv")
+pre$Time <- "Pre"
+pre.N <-pre <- filter(pre, ID_Year== "S17_2011" | ID_Year== "S16_2010" | ID_Year== "S36_2011" | ID_Year== "S15_2010")
+pre.C <- pre <- filter(pre, ID_Year== "S10_2011" | ID_Year== "S08_2011"  | ID_Year=="S32_2010" | ID_Year== "S29_2010" | ID_Year== "S18_2010" )
+pre.S <- pre <- filter(pre, ID_Year=="S02_2011" | ID_Year=="S11_2011" | ID_Year=="S07_2011")
+write.csv(pre.N, 'Data/pre.N.csv') #Export file)
+write.csv(pre.C, 'Data/pre.C.csv') #Export file)
+write.csv(pre.S, 'Data/pre.S.csv') #Export file)
+peak <- read.csv("Data/peak.csv")
+peak$Time <- "Peak"
+peak.N <- filter(peak, ID_Year== "S17_2015" | ID_Year== "S16_2016" | ID_Year== "S36_2015" | ID_Year== "S15_2015")
+peak.C <- filter(peak, ID_Year== "S10_2014" | ID_Year== "S08_2013" | ID_Year=="S32_2014" | ID_Year== "S29_2015" | ID_Year== "S18_2014")
+peak.S <- filter(peak, ID_Year=="S02_2014" | ID_Year=="S11_2016" | ID_Year=="S07_2014")
+write.csv(peak.N, 'Data/peak.N.csv') #Export file)
+write.csv(peak.C, 'Data/peak.C.csv') #Export file)
+write.csv(peak.S, 'Data/peak.S.csv') #Export file)
+#new Time columns
+pre.N$Time <- "Pre"
+peak.N$Time <- "Peak"
+#bind together
+all.N <- rbind(pre.N,peak.N)
+#PCA of all data
+pca_N <- prcomp(na.omit(all.N[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pca_N)
+biplot(pca_N, scale=0, col=c("black", "red"), xlab = "PC1 (55%)", ylab="PC2 (22%)")
+ind_N <- get_pca(pca_N, "ind")
+N.ind <- ind_N$coord
+N.ind <- as.data.frame(N.ind)
+var_N <- get_pca(pca_N, "var")
+N.var <- var_N$coord
+N.var <- as.data.frame(N.var)
+N.na <- na.omit(all.N)
+N.pc <- cbind(N.na, N.ind)
+#ggplot of pc values
+b <- ggplot(data=N.pc, aes(Dim.1, Dim.2))+
+geom_point(aes(colour=Time))+
+xlab("PC1 (55%)")+
+ylab("PC2 (22%)")+
+scale_color_manual(values= c("Peak"="#FF3333", "Pre"="#3399FF"))+
+theme_classic()
+b
+#PCA of all data
+pca_pre.N <- prcomp(na.omit(pre.N[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pca_pre.N)
+biplot(pca_pre.N, scale=0, col=c("black", "red"), xlab = "PC1 (54%)", ylab="PC2 (22%)")
+biplot(pca_N, scale=0, col=c("black", "red"), xlab = "PC1 (55%)", ylab="PC2 (22%)")
+#Peak North Time columns
+Peak.N$Time <- "Peak"
+#Peak North Time columns
+peak.N$Time <- "Peak"
+#PCA of pre north data
+pca_peak.N <- prcomp(na.omit(peak.N[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pca_peak.N)
+biplot(pca_peak.N, scale=0, col=c("black", "red"), xlab = "PC1 (56%)", ylab="PC2 (23%)")
+#PRE.Centre Time columns
+pre.C$Time <- "Pre"
+pre.C <- read.csv("Data/pre.C.csv")
+pre.S <- read.csv("Data/pre.S.csv")
+peak.N <- read.csv("Data/peak.N.csv")
+peak.C <- read.csv("Data/peak.C.csv")
+peak.S <- read.csv("Data/peak.S.csv")
+#PRE.Centre Time columns
+pre.C$Time <- "Pre"
+pre.C <- read.csv("Data/pre.C.csv")
+pre <- read.csv("Data/pre.csv")
+pre$Time <- "Pre"
+pre.C <- pre <- filter(pre, ID_Year== "S10_2011" | ID_Year== "S08_2011"  | ID_Year=="S32_2010" | ID_Year== "S29_2010" | ID_Year== "S18_2010" )
+#write.csv(pre.N, 'Data/pre.N.csv') #Export file)
+write.csv(pre.C, 'Data/pre.C.csv') #Export file)
+pre.C <- read.csv("Data/pre.C.csv")
+#PRE.Centre Time columns
+pre.C$Time <- "Pre"
+#PCA of pre north data
+pca_pre.C <- prcomp(na.omit(pre.C[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pca_pre.C)
+biplot(pca_pre.C, scale=0, col=c("black", "red"), xlab = "PC1 (54%)", ylab="PC2 (22%)")
+biplot(pca_pre.C, scale=0, col=c("black", "red"), xlab = "PC1 (60%)", ylab="PC2 (21%)")
+#Peak Centre Time columns
+peak.C$Time <- "Peak"
+#PCA of pre north data
+pca_peak.C <- prcomp(na.omit(peak.C[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pca_peak.C)
+biplot(pca_peak.C, scale=0, col=c("black", "red"), xlab = "PC1 (57%)", ylab="PC2 (15%)")
+View(peak.C)
+#All Centre bind together
+all.C <- rbind(pre.C,peak.C)
+#PCA of all data
+pca_C <- prcomp(na.omit(all.C[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pca_C)
+biplot(pca_C, scale=0, col=c("black", "red"), xlab = "PC1 (55%)", ylab="PC2 (22%)")
+biplot(pca_C, scale=0, col=c("black", "red"), xlab = "PC1 (58%)", ylab="PC2 (18%)")
+pre.S <- pre <- filter(pre, ID_Year=="S02_2011" | ID_Year=="S11_2011" | ID_Year=="S07_2011")
+#write.csv(pre.N, 'Data/pre.N.csv') #Export file)
+#write.csv(pre.C, 'Data/pre.C.csv') #Export file)
+write.csv(pre.S, 'Data/pre.S.csv') #Export file)
+pre.S <- pre <- filter(pre, ID_Year=="S02_2011" | ID_Year=="S11_2011" | ID_Year=="S07_2011")
+pre <- read.csv("Data/pre.csv")
+pre.S <- pre <- filter(pre, ID_Year=="S02_2011" | ID_Year=="S11_2011" | ID_Year=="S07_2011")
+#write.csv(pre.N, 'Data/pre.N.csv') #Export file)
+#write.csv(pre.C, 'Data/pre.C.csv') #Export file)
+write.csv(pre.S, 'Data/pre.S.csv') #Export file)
+pre.S <- read.csv("Data/pre.S.csv")
+#PRE.SOUTH Time columns
+pre.S$Time <- "Pre"
+#PCA of pre south data
+pca_pre.S <- prcomp(na.omit(pre.S[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pca_pre.S)
+biplot(pca_pre.S, scale=0, col=c("black", "red"), xlab = "PC1 (50%)", ylab="PC2 (24%)")
+#Peak south Time columns
+peak.S$Time <- "Peak"
+#PCA of peak south data
+pca_peak.S <- prcomp(na.omit(peak.S[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pca_peak.S)
+biplot(pca_peak.S, scale=0, col=c("black", "red"), xlab = "PC1 (46%)", ylab="PC2 (25%)")
+#All south bind together
+all.S <- rbind(pre.S,peak.S)
+#PCA of all south data
+pca_S <- prcomp(na.omit(all.S[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pca_S)
+biplot(pca_S, scale=0, col=c("black", "red"), xlab = "PC1 (48%)", ylab="PC2 (26%)")
+biplot(pca_C, scale=0, col=c("black", "red"), xlab = "PC1 (58%)", ylab="PC2 (18%)")
+biplot(pca_pre.C, scale=0, col=c("black", "red"), xlab = "PC1 (60%)", ylab="PC2 (21%)")
+biplot(pca_peak.C, scale=0, col=c("black", "red"), xlab = "PC1 (57%)", ylab="PC2 (15%)")
+# PCA
+library(tidyverse)
+library(vegan)
+library(devtools)
+library("factoextra")
+# Read in pre and peak datasets
+pre <- read.csv("Data/pre.csv")
+peak <- read.csv("Data/peak.csv")
+#new Time columns
+pre$Time <- "Pre"
+peak$Time <- "Peak"
+#bind together
+all <- rbind(pre,peak)
+#PCA of all data
+pc1_all <- prcomp(na.omit(all[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pc1_all)
+biplot(pc1_all, scale=0, col=c("black", "red"), xlab = "PC1 (54%)", ylab="PC2 (21%)")
+ind_all <- get_pca(pc1_all, "ind")
+all.ind <- ind_all$coord
+all.ind <- as.data.frame(all.ind)
+var_all <- get_pca(pc1_all, "var")
+all.var <- var_all$coord
+all.var <- as.data.frame(all.var)
+all.na <- na.omit(all)
+all.pc <- cbind(all.na, all.ind)
+#ggplot of pc values
+b <- ggplot(data=all.pc, aes(Dim.1, Dim.2))+
+geom_point(aes(colour=Time))+
+xlab("PC1 (54%)")+
+ylab("PC2 (22%)")+
+scale_color_manual(values= c("Peak"="#FF3333", "Pre"="#3399FF"))+
+theme_classic()
+b +
+geom_segment(aes(x=0, y=0, xend = -3, yend = -2.20086205))+ #flowering time
+geom_segment(aes(x=0, y=0, xend=-3, yend=-1.836009314)) + #SLA
+geom_segment(aes(x=0, y=0, xend=4, yend=1.17845849)) + #water content
+geom_segment(aes(x=0, y=0, xend=-3, yend=2.284833241)) + #stomatal conductance
+geom_segment(aes(x=0, y=0, xend=-3, yend=2.151326351)) + # assimilation
+geom_text()
+#can add a facet wrap with the different regions
+#try doing a separate PCA for each region
+#biplots
+#Assess PCA relationships among response variables
+#Pre
+pc1_pre <- prcomp(na.omit(pre[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pc1_pre)
+screeplot(pc1_pre, npcs=5, type="lines") #this would go into supplemental, may need to test significance of these angles
+biplot(pc1_pre, scale=0, col=c("black", "red"), xlab = "PC1 (54%)", ylab="PC2 (21%)")
+# Extract the results for variables and individuals
+ind <- get_pca(pc1_pre, "ind")
+pre.ind <- ind$coord
+pre.ind <- as.data.frame(pre.ind)
+var <- get_pca(pc1_pre, "var")
+pre.var <- var$coord
+pre.var <- as.data.frame(pre.var)
+#remove NA values from the pre dataset
+pre.na <- na.omit(pre)
+#stitch pre.ind to pre.na
+pre.pc <- cbind(pre.na, pre.ind)
+#ggplot of pc values
+b <- ggplot(data=pre.pc, aes(Dim.1, Dim.2))+
+geom_point(aes(colour=ID_Year))+
+xlab("PC1 (54%)")+
+ylab("PC2 (22%)")+
+scale_color_manual(values= c("S02_2011"="#FF3333", "S07_2011"="#FF3333",
+"S08_2011"="#FFCC00","S10_2011"="#FFCC00","S11_2011"="#FF3333",
+"S15_2010"= "#3399FF", "S16_2010"="#3399FF", "S17_2011"="#3399FF", "S18_2010"="#FFCC00",
+"S29_2010"="#FFCC00", "S32_2010"="#FFCC00", "S36_2011"="#3399FF"))+
+theme_classic()
+b +
+geom_segment(aes(x=0, y=0, xend=-4.44853, yend=-2, colour = "Flowering Time"))+
+geom_segment(aes(x=0, y=0, xend=-4.666497843, yend=-3, colour = "SLA"))+
+geom_segment(aes(x=0, y=0, xend=4.877790341, yend=2, colour = "Water Content"))+
+geom_segment(aes(x=0, y=0, xend=-2.474314573, yend=2, colour = "Stomatal Conductance")) +
+geom_segment(aes(x=0, y=0, xend=-3.398216279, yend=2.5, colour = "Assimilation"))
+#Peak
+pc1_peak <- prcomp(na.omit(peak[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pc1_peak)
+screeplot(pc1_peak, npcs=5, type="lines") #this would go into supplemental, may need to test significance of these angles
+biplot(pc1_peak, scale=0, col=c("black", "red"), xlab = "PC1 (53%)", ylab="PC2 (21%)")
+# Extract the results for variables and individuals
+ind2 <- get_pca(pc1_peak, "ind")
+peak.ind <- ind2$coord
+peak.ind <- as.data.frame(peak.ind)
+var2 <- get_pca(pc1_peak, "var")
+peak.var <- var2$coord
+peak.var <- as.data.frame(peak.var)
+#remove NA values from the pre dataset
+peak.na <- na.omit(peak)
+#stitch pre.ind to pre.na
+peak.pc <- cbind(peak.na, peak.ind)
+d <- ggplot(data=peak.pc, aes(Dim.1, Dim.2))+
+geom_point(aes(colour=ID_Year))+
+xlab("PC1 (53%)")+
+ylab("PC2 (21%)")+
+scale_color_manual(values= c("S02_2014"="#FF3333", "S07_2014"="#FF3333",
+"S08_2013"="#FFCC00","S10_2014"="#FFCC00","S11_2016"="#FF3333",
+"S15_2015"= "#3399FF", "S16_2016"="#3399FF", "S17_2015"="#3399FF", "S18_2014"="#FFCC00",
+"S29_2015"="#FFCC00", "S32_2014"="#FFCC00", "S36_2015"="#3399FF"))+
+theme_classic()
+d +
+geom_segment(aes(x=0, y=0, xend=-2.660433795, yend=-3, colour = "Flowering Time"))+
+geom_segment(aes(x=0, y=0, xend=-4.457441504, yend=-2.5, colour = "SLA"))+
+geom_segment(aes(x=0, y=0, xend=5.15969818, yend=1, colour = "Water Content"))+
+geom_segment(aes(x=0, y=0, xend=-2.887602693, yend=2, colour = "Stomatal Conductance")) +
+geom_segment(aes(x=0, y=0, xend=-2.948203031, yend=2, colour = "Assimilation"))
+#ggsave("pdsi_1980.pdf", width = 12, height = 7, units = "in")
+# with full dataset
+# PCA
+# Read in pre and peak datasets
+full <- read.csv("Data/y7.csv")
+#biplots
+#Assess PCA relationships among response variables
+#Pre
+pc1_all <- prcomp(na.omit(full[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pc1_all)
+screeplot(pc1_all, npcs=5, type="lines") #this would go into supplemental, may need to test significance of these angles
+biplot(pc1_all, scale=0, col=c("black", "red"), xlab = "PC1 (52%)", ylab="PC2 (21%)")
+View(pre.ind)
+View(var)
+View(peak.var)
+View(peak.var)
+View(pre)

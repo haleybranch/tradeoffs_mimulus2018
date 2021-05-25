@@ -1,0 +1,512 @@
+b5
+ggsave("b5.pdf", width = 7, height = 7, units = "in")
+################## PCA of PEAK SOUTH data ####################
+pca_peak.S <- prcomp(na.omit(peak.S[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pca_peak.S)
+biplot(pca_peak.S, scale=0, col=c("black", "red"), xlab = "PC1 (48%)", ylab="PC2 (26%)")
+######### to extract the e.vectors for Peak Centre
+indpeak_S <- get_pca(pca_peak.S, "ind")
+Speak.ind <- indpeak_S$coord
+Speak.ind <- as.data.frame(Speak.ind)
+Speak.ind$Dim.2 <- (Speak.ind$Dim.2)*-1
+varpeak_S <- get_pca(pca_peak.S, "var")
+Speak.var <- varpeak_S$coord
+Speak.var <- as.data.frame(Speak.var)
+Speak.var$Dim.2 <- (Speak.var$Dim.2)*-1
+Speak.na <- na.omit(peak.S)
+Speak.pc <- cbind(Speak.na, Speak.ind)
+Speakfty <- (Speak.var[1,2]/Speak.var[1,1])*(-2.5)
+Speakslay <- (Speak.var[2,2]/Speak.var[2,1])*(-3)
+Speakwcy <- (Speak.var[3,2]/Speak.var[3,1])*(3)
+Speakgsy <- (Speak.var[4,2]/Speak.var[4,1])*(-2.5)
+Speakay <- (Speak.var[5,2]/Speak.var[5,1])*(-2.5)
+#ggplot of Peak North pc values
+b6 <- ggplot(data=Speak.pc, aes(Dim.1, Dim.2))+
+geom_point()+
+xlab("PC1 (48%)")+
+ylab("PC2 (26%)")+
+xlim(-4, 4)+
+ylim(-4,4)+
+scale_color_manual(values= c("Peak"="#FF3333", "Pre"="#3399FF"))+
+theme_classic()
+b6 <- b6 +
+geom_segment(aes(x=0, y=0, xend =-2.5, yend=Speakfty))+ #flowering time
+geom_segment(aes(x=0, y=0, xend=-3, yend=Speakslay)) + #SLA
+geom_segment(aes(x=0, y=0, xend=3, yend=Speakwcy)) + #water content
+geom_segment(aes(x=0, y=0, xend=-2.5, yend=Speakgsy)) + #stomatal conductance
+geom_segment(aes(x=0, y=0, xend=-2.5, yend=Speakay)) # assimilation
+b6 <- b6 +
+geom_text(size=4.5, x=-2.6, y=4, label="South Peak", color="red")+
+geom_text(size = 4, x=-2.8, y=Speakfty-0.02, label="DF", color="black")+
+geom_text(size = 4, x=-3.5, y=Speakslay, label="SLA", color="black")+
+geom_text(size = 4, x=3.5, y=Speakwcy, label="WC", color="black")+
+geom_text(size = 4, x=-2.8, y=2.4, label="gs", color="black")+
+geom_text(size = 4, x=-2.8, y=Speakay, label="A", color="black")
+b6
+ggsave("b6.pdf", width = 7, height = 7, units = "in")
+############### stitch together in cowplot ####################################
+#call each pdf figure
+plot_grid(b1,b2,b3,b4,b5,b6,ncol = 2)
+# PCA of each region
+library(tidyverse)
+library(vegan)
+library(devtools)
+library("factoextra")
+library(finalfit)
+library(dplyr)
+library(pander)
+library(cowplot)
+# Read in pre and peak datasets
+pre.N <- read.csv("Data/pre.N.csv")
+pre.C <- read.csv("Data/pre.C.csv")
+pre.S <- read.csv("Data/pre.S.csv")
+peak.N <- read.csv("Data/peak.N.csv")
+peak.C <- read.csv("Data/peak.C.csv")
+peak.S <- read.csv("Data/peak.S.csv")
+all.N <- rbind(pre.N, peak.N)
+all.C <- rbind(pre.C, peak.C)
+all.S <- rbind(pre.S, peak.S)
+#################### PCA of PRE NORTH data ######################
+pca_pre.N <- prcomp(na.omit(pre.N[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pca_pre.N)
+#biplot(pca_pre.N, scale=0, col=c("black", "red"), xlab = "PC1 (55%)", ylab="PC2 (22%)")
+######### to extract the e.vectors for Pre North
+indpre_N <- get_pca(pca_pre.N, "ind")
+Npre.ind <- indpre_N$coord
+Npre.ind <- as.data.frame(Npre.ind)
+Npre.pc <- cbind(pre.N, Npre.ind)
+#Npre.pc$Dim.1 <- (Npre.pc$Dim.1)*-1
+Npre.pc$Dim.2 <- (Npre.pc$Dim.2)*-1
+varpre_N <- get_pca(pca_pre.N, "var")
+Npre.var <- varpre_N$coord
+Npre.var <- as.data.frame(Npre.var)
+#Npre.var$Dim.1 <- (Npre.var$Dim.1)*-1
+Npre.var$Dim.2 <- (Npre.var$Dim.2)*-1
+#ggplot of Pre North pc values
+b1 <- ggplot(data=Npre.pc, aes(Dim.1, Dim.2))+
+geom_point()+
+xlab("PC1 (55%)")+
+ylab("PC2 (22%)")+
+xlim(-4, 4)+
+ylim(-4,4)+
+scale_color_manual(values= c("Peak"="#FF3333", "Pre"="#3399FF"))+
+theme_classic()
+fty <- (Npre.var[1,2]/Npre.var[1,1])*(-3)
+slay <- (Npre.var[2,2]/Npre.var[2,1])*(-3)
+wcy <- (Npre.var[3,2]/Npre.var[3,1])*(3)
+gsy <- (Npre.var[4,2]/Npre.var[4,1])*(-2.5)
+ay <- (Npre.var[5,2]/Npre.var[5,1])*(-2.5)
+b1 <- b1 +
+geom_segment(aes(x=0, y=0, xend =-3, yend=fty))+ #flowering time
+geom_segment(aes(x=0, y=0, xend=-3, yend=slay)) + #SLA
+geom_segment(aes(x=0, y=0, xend=3, yend=wcy)) + #water content
+geom_segment(aes(x=0, y=0, xend=-2.5, yend=gsy)) + #stomatal conductance
+geom_segment(aes(x=0, y=0, xend=-2.5, yend=ay)) # assimilation
+b1 <- b1 +
+geom_text(size=4.5, x=-2.6, y=4, label="North Pre", color="red")+
+geom_text(size = 4, x=-3.5, y=fty-0.02, label="DF", color="black")+
+geom_text(size = 4, x=-3.5, y=slay-0.02, label="SLA", color="black")+
+geom_text(size = 4, x=3.5, y=wcy+0.02, label="WC", color="black")+
+geom_text(size = 4, x=-2.5+0.02, y=2.5, label="gs", color="black")+
+geom_text(size = 4, x=-2.7, y=ay+0.02, label="A", color="black")
+b1
+ggsave("b1.pdf", width = 7, height = 7, units = "in")
+############# PCA of PEAK NORTH data #########################
+pca_peak.N <- prcomp(na.omit(peak.N[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pca_peak.N)
+biplot(pca_peak.N, scale=0, col=c("black", "red"), xlab = "PC1 (57%)", ylab="PC2 (23%)")
+######### to extract the e.vectors for Peak North
+indpeak_N <- get_pca(pca_peak.N, "ind")
+Npeak.ind <- indpeak_N$coord
+Npeak.ind <- as.data.frame(Npeak.ind)
+varpeak_N <- get_pca(pca_peak.N, "var")
+Npeak.var <- varpeak_N$coord
+Npeak.var <- as.data.frame(Npeak.var)
+Npeak.na <- na.omit(peak.N)
+Npeak.pc <- cbind(Npeak.na, Npeak.ind)
+Nfty <- (Npeak.var[1,2]/Npeak.var[1,1])*(-3)
+Nslay <- (Npeak.var[2,2]/Npeak.var[2,1])*(-3)
+Nwcy <- (Npeak.var[3,2]/Npeak.var[3,1])*(3)
+Ngsy <- (Npeak.var[4,2]/Npeak.var[4,1])*(-2.5)
+Nay <- (Npeak.var[5,2]/Npeak.var[5,1])*(-2.5)
+#ggplot of Peak North pc values
+b2 <- ggplot(data=Npre.pc, aes(Dim.1, Dim.2))+
+geom_point()+
+xlab("PC1 (57%)")+
+ylab("PC2 (23%)")+
+xlim(-4, 4)+
+ylim(-4,4)+
+scale_color_manual(values= c("Peak"="#FF3333", "Pre"="#3399FF"))+
+theme_classic()
+b2 <- b2 +
+geom_segment(aes(x=0, y=0, xend =-3, yend=Nfty))+ #flowering time
+geom_segment(aes(x=0, y=0, xend=-3, yend=Nslay)) + #SLA
+geom_segment(aes(x=0, y=0, xend=3, yend=Nwcy)) + #water content
+geom_segment(aes(x=0, y=0, xend=-2.5, yend=Ngsy)) + #stomatal conductance
+geom_segment(aes(x=0, y=0, xend=-2.5, yend=Nay)) # assimilation
+b2 <- b2 +
+geom_text(size=4.5, x=-2.6, y=4, label="North Peak", color="red")+
+geom_text(size = 4, x=-3.3, y=Nfty-0.02, label="DF", color="black")+
+geom_text(size = 4, x=-3.5, y=Nslay-0.02, label="SLA", color="black")+
+geom_text(size = 4, x=3.5, y=Nwcy+0.02, label="WC", color="black")+
+geom_text(size = 4, x=-2.5+0.02, y=2.5, label="gs", color="black")+
+geom_text(size = 4, x=-2.7, y=Nay+0.02, label="A", color="black")
+b2
+ggsave("b2.pdf", width = 7, height = 7, units = "in")
+############# #PCA of PRE CENTRE data ########################
+pca_pre.C <- prcomp(na.omit(pre.C[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pca_pre.C)
+biplot(pca_pre.C, scale=0, col=c("black", "red"), xlab = "PC1 (60%)", ylab="PC2 (21%)")
+######### to extract the e.vectors for Pre Centre
+indpre_C <- get_pca(pca_pre.C, "ind")
+Cpre.ind <- indpre_C$coord
+Cpre.ind <- as.data.frame(Cpre.ind)
+#Npre.pc$Dim.1 <- (Npre.pc$Dim.1)*-1
+Cpre.ind$Dim.2 <- (Cpre.ind$Dim.2)*-1
+varpre_C <- get_pca(pca_pre.C, "var")
+Cpre.var <- varpre_C$coord
+Cpre.var <- as.data.frame(Cpre.var)
+#Npre.var$Dim.1 <- (Npre.var$Dim.1)*-1
+Cpre.var$Dim.2 <- (Cpre.var$Dim.2)*-1
+Cpre.na <- na.omit(pre.C)
+Cpre.pc <- cbind(Cpre.na, Cpre.ind)
+Cprefty <- (Cpre.var[1,2]/Cpre.var[1,1])*(-4)
+Cpreslay <- (Cpre.var[2,2]/Cpre.var[2,1])*(-3)
+Cprewcy <- (Cpre.var[3,2]/Cpre.var[3,1])*(3)
+Cpregsy <- (Cpre.var[4,2]/Cpre.var[4,1])*(-2.5)
+Cpreay <- (Cpre.var[5,2]/Cpre.var[5,1])*(-2.5)
+#ggplot of Peak North pc values
+b3 <- ggplot(data=Cpre.pc, aes(Dim.1, Dim.2))+
+geom_point()+
+xlab("PC1 (61%)")+
+ylab("PC2 (21%)")+
+xlim(-4, 4)+
+ylim(-4,4)+
+scale_color_manual(values= c("Peak"="#FF3333", "Pre"="#3399FF"))+
+theme_classic()
+b3 <- b3 +
+geom_segment(aes(x=0, y=0, xend =-3, yend=Cprefty))+ #flowering time
+geom_segment(aes(x=0, y=0, xend=-3, yend=Cpreslay)) + #SLA
+geom_segment(aes(x=0, y=0, xend=3, yend=Cprewcy)) + #water content
+geom_segment(aes(x=0, y=0, xend=-2.5, yend=Cpregsy)) + #stomatal conductance
+geom_segment(aes(x=0, y=0, xend=-2.5, yend=Cpreay)) # assimilation
+b3 <- b3 +
+geom_text(size=4.5, x=-2.4, y=4, label="Centre Pre", color="red")+
+geom_text(size = 4, x=-3.3, y=Cprefty-0.02, label="DF", color="black")+
+geom_text(size = 4, x=-3.5, y=Cpreslay-0.25, label="SLA", color="black")+
+geom_text(size = 4, x=3.5, y=Cprewcy+0.02, label="WC", color="black")+
+geom_text(size = 4, x=-2.5+0.02, y=2.2, label="gs", color="black")+
+geom_text(size = 4, x=-2.7, y=Cpreay+0.02, label="A", color="black")
+b3
+ggsave("b3.pdf", width = 7, height = 7, units = "in")
+################### PCA of PEAK CENTRE data ######################
+pca_peak.C <- prcomp(na.omit(peak.C[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pca_peak.C)
+biplot(pca_peak.C, scale=0, col=c("black", "red"), xlab = "PC1 (58%)", ylab="PC2 (17%)")
+######### to extract the e.vectors for Peak Centre
+indpeak_C <- get_pca(pca_peak.C, "ind")
+Cpeak.ind <- indpeak_C$coord
+Cpeak.ind <- as.data.frame(Cpeak.ind)
+Cpeak.ind$Dim.1 <- (Cpeak.ind$Dim.1)*-1
+Cpeak.ind$Dim.2 <- (Cpeak.ind$Dim.2)*-1
+varpeak_C <- get_pca(pca_peak.C, "var")
+Cpeak.var <- varpeak_C$coord
+Cpeak.var <- as.data.frame(Cpeak.var)
+Cpeak.var$Dim.1 <- (Cpeak.var$Dim.1)*-1
+Cpeak.var$Dim.2 <- (Cpeak.var$Dim.2)*-1
+Cpeak.na <- na.omit(peak.C)
+Cpeak.pc <- cbind(Cpeak.na, Cpeak.ind)
+Cpeakfty <- (Cpeak.var[1,2]/Cpeak.var[1,1])*(-3.5)
+Cpeakslay <- (Cpeak.var[2,2]/Cpeak.var[2,1])*(-3.5)
+Cpeakwcy <- (Cpeak.var[3,2]/Cpeak.var[3,1])*(3.5)
+Cpeakgsy <- (Cpeak.var[4,2]/Cpeak.var[4,1])*(-3.5)
+Cpeakay <- (Cpeak.var[5,2]/Cpeak.var[5,1])*(-3.5)
+#ggplot of Peak North pc values
+b4 <- ggplot(data=Cpeak.pc, aes(Dim.1, Dim.2))+
+geom_point()+
+xlab("PC1 (58%)")+
+ylab("PC2 (17%)")+
+xlim(-4, 4)+
+ylim(-4,4)+
+scale_color_manual(values= c("Peak"="#FF3333", "Pre"="#3399FF"))+
+theme_classic()
+b4 <- b4 +
+geom_segment(aes(x=0, y=0, xend =-3.5, yend=Cpeakfty))+ #flowering time
+geom_segment(aes(x=0, y=0, xend=-3.5, yend=Cpeakslay)) + #SLA
+geom_segment(aes(x=0, y=0, xend=3.5, yend=Cpeakwcy)) + #water content
+geom_segment(aes(x=0, y=0, xend=-3.5, yend=Cpeakgsy)) + #stomatal conductance
+geom_segment(aes(x=0, y=0, xend=-3.5, yend=Cpeakay)) # assimilation
+b4 <- b4 +
+geom_text(size=4.5, x=-2.4, y=4, label="Centre Peak", color="red")+
+geom_text(size = 4, x=-3.8, y=Cpeakfty-0.02, label="DF", color="black")+
+geom_text(size = 4, x=-3.5, y=Cpeakslay-0.25, label="SLA", color="black")+
+geom_text(size = 4, x=3.8, y=Cpeakwcy+0.02, label="WC", color="black")+
+geom_text(size = 4, x=-3.8, y=2.2, label="gs", color="black")+
+geom_text(size = 4, x=-3.8, y=Cpeakay+0.02, label="A", color="black")
+b4
+ggsave("b4.pdf", width = 7, height = 7, units = "in")
+################## PCA of PRE SOUTH data ######################
+pca_pre.S <- prcomp(na.omit(pre.S[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pca_pre.S)
+biplot(pca_pre.S, scale=0, col=c("black", "red"), xlab = "PC1 (58%)", ylab="PC2 (21%)")
+indpre_S <- get_pca(pca_pre.S, "ind")
+Spre.ind <- indpre_S$coord
+Spre.ind <- as.data.frame(Spre.ind)
+Spre.ind$Dim.2 <- (Spre.ind$Dim.2)*-1
+varpre_S <- get_pca(pca_pre.S, "var")
+Spre.var <- varpre_S$coord
+Spre.var <- as.data.frame(Spre.var)
+Spre.var$Dim.2 <- (Spre.var$Dim.2)*-1
+Spre.na <- na.omit(pre.S)
+Spre.pc <- cbind(Spre.na, Spre.ind)
+Sprefty <- (Spre.var[1,2]/Spre.var[1,1])*(-3)
+Spreslay <- (Spre.var[2,2]/Spre.var[2,1])*(-3)
+Sprewcy <- (Spre.var[3,2]/Spre.var[3,1])*(3)
+Spregsy <- (Spre.var[4,2]/Spre.var[4,1])*(-2.5)
+Spreay <- (Spre.var[5,2]/Spre.var[5,1])*(-2.5)
+#ggplot of Peak North pc values
+b5 <- ggplot(data=Spre.pc, aes(Dim.1, Dim.2))+
+geom_point()+
+xlab("PC1 (58%)")+
+ylab("PC2 (21%)")+
+xlim(-4, 4)+
+ylim(-4,4)+
+theme_classic()
+b5 <- b5 +
+geom_segment(aes(x=0, y=0, xend =-3, yend=Sprefty))+ #flowering time
+geom_segment(aes(x=0, y=0, xend=-3, yend=Spreslay)) + #SLA
+geom_segment(aes(x=0, y=0, xend=3, yend=Sprewcy)) + #water content
+geom_segment(aes(x=0, y=0, xend=-2.5, yend=Spregsy)) + #stomatal conductance
+geom_segment(aes(x=0, y=0, xend=-2.5, yend=Spreay)) # assimilation
+b5 <- b5 +
+geom_text(size=4.5, x=-2.6, y=4, label="South Pre", color="red")+
+geom_text(size = 4, x=-3.5, y=Sprefty-0.02, label="DF", color="black")+
+geom_text(size = 4, x=-3.5, y=Spreslay-0.05, label="SLA", color="black")+
+geom_text(size = 4, x=3.5, y=Sprewcy+0.02, label="WC", color="black")+
+geom_text(size = 4, x=-2.8, y=2.2, label="gs", color="black")+
+geom_text(size = 4, x=-2.8, y=Spreay+0.02, label="A", color="black")
+b5
+ggsave("b5.pdf", width = 7, height = 7, units = "in")
+################## PCA of PEAK SOUTH data ####################
+pca_peak.S <- prcomp(na.omit(peak.S[,c("Experiment_Date","SLA","Water_Content",
+"Stomatal_Conductance","Assimilation")]), scale=T)
+summary(pca_peak.S)
+biplot(pca_peak.S, scale=0, col=c("black", "red"), xlab = "PC1 (48%)", ylab="PC2 (26%)")
+######### to extract the e.vectors for Peak Centre
+indpeak_S <- get_pca(pca_peak.S, "ind")
+Speak.ind <- indpeak_S$coord
+Speak.ind <- as.data.frame(Speak.ind)
+Speak.ind$Dim.2 <- (Speak.ind$Dim.2)*-1
+varpeak_S <- get_pca(pca_peak.S, "var")
+Speak.var <- varpeak_S$coord
+Speak.var <- as.data.frame(Speak.var)
+Speak.var$Dim.2 <- (Speak.var$Dim.2)*-1
+Speak.na <- na.omit(peak.S)
+Speak.pc <- cbind(Speak.na, Speak.ind)
+Speakfty <- (Speak.var[1,2]/Speak.var[1,1])*(-2.5)
+Speakslay <- (Speak.var[2,2]/Speak.var[2,1])*(-3)
+Speakwcy <- (Speak.var[3,2]/Speak.var[3,1])*(3)
+Speakgsy <- (Speak.var[4,2]/Speak.var[4,1])*(-2.5)
+Speakay <- (Speak.var[5,2]/Speak.var[5,1])*(-2.5)
+#ggplot of Peak North pc values
+b6 <- ggplot(data=Speak.pc, aes(Dim.1, Dim.2))+
+geom_point()+
+xlab("PC1 (48%)")+
+ylab("PC2 (26%)")+
+xlim(-4, 4)+
+ylim(-4,4)+
+scale_color_manual(values= c("Peak"="#FF3333", "Pre"="#3399FF"))+
+theme_classic()
+b6 <- b6 +
+geom_segment(aes(x=0, y=0, xend =-2.5, yend=Speakfty))+ #flowering time
+geom_segment(aes(x=0, y=0, xend=-3, yend=Speakslay)) + #SLA
+geom_segment(aes(x=0, y=0, xend=3, yend=Speakwcy)) + #water content
+geom_segment(aes(x=0, y=0, xend=-2.5, yend=Speakgsy)) + #stomatal conductance
+geom_segment(aes(x=0, y=0, xend=-2.5, yend=Speakay)) # assimilation
+b6 <- b6 +
+geom_text(size=4.5, x=-2.6, y=4, label="South Peak", color="red")+
+geom_text(size = 4, x=-2.8, y=Speakfty-0.02, label="DF", color="black")+
+geom_text(size = 4, x=-3.5, y=Speakslay, label="SLA", color="black")+
+geom_text(size = 4, x=3.5, y=Speakwcy, label="WC", color="black")+
+geom_text(size = 4, x=-2.8, y=2.4, label="gs", color="black")+
+geom_text(size = 4, x=-2.8, y=Speakay, label="A", color="black")
+b6
+ggsave("b6.pdf", width = 7, height = 7, units = "in")
+############### stitch together in cowplot ####################################
+#call each pdf figure
+plot_grid(b1,b2,b3,b4,b5,b6,ncol = 2)
+# Trait correlations with the raw data, comparing pre and post drought years
+#read in packages
+library(tidyverse)
+library(Hmisc)
+pre <- read.csv("Data/pre.csv", header = T)
+peak <- read.csv("Data/peak.csv", header = T)
+#Remove unnecessary columns
+pre <- select(pre, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+peak <-select(peak, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+#change format to matrix
+pre <- as.matrix(pre)
+peak <- as.matrix(peak)
+#running matrix correlation
+rcorr(pre)
+rcorr(peak)
+# figure out how to export as table with knitr
+# Trait correlations with the raw data, comparing pre and post drought years
+#read in packages
+library(tidyverse)
+library(Hmisc)
+pre <- read.csv("Data/pre.csv", header = T)
+peak <- read.csv("Data/peak.csv", header = T)
+#Remove unnecessary columns
+pre <- select(pre, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+peak <-select(peak, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+#change format to matrix
+pre <- as.matrix(pre)
+peak <- as.matrix(peak)
+#running matrix correlation
+pre_r <- rcorr(pre)
+peak_r <- rcorr(peak)
+str(pre_r)
+str(pre_r$r)
+pre_r$s
+pre_r$r
+str(pre_r$r)
+summary (pre_r$r)
+View(pre_r)
+pre_corr<-pre_r$r
+View(pre_corr)
+str(pre_corr)
+write.csv(pre_corr, "pre_r.csv")
+# Trait correlations with the raw data, comparing pre and post drought years
+#read in packages
+library(tidyverse)
+library(Hmisc)
+pre <- read.csv("Data/pre.csv", header = T)
+peak <- read.csv("Data/peak.csv", header = T)
+#Remove unnecessary columns
+pre <- select(pre, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+peak <-select(peak, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+#change format to matrix
+pre <- as.matrix(pre)
+peak <- as.matrix(peak)
+#running matrix correlation
+pre_r <- rcorr(pre)
+peak_r <- rcorr(peak)
+#Save as dataframe
+pre_corr<-pre_r$r
+peak_corr<-peak_r$r
+pre_p<-pre_r$P
+peak_p<-peak_r$P
+#Write Table
+write.csv(pre_corr, "pre_r.csv")
+write.csv(peak_corr, "pre_r.csv")
+write.csv(pre_P, "pre_P.csv")
+write.csv(peak_P, "pre_P.csv")
+# Trait correlations with the raw data, comparing pre and post drought years
+#read in packages
+library(tidyverse)
+library(Hmisc)
+pre <- read.csv("Data/pre.csv", header = T)
+peak <- read.csv("Data/peak.csv", header = T)
+#Remove unnecessary columns
+pre <- select(pre, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+peak <-select(peak, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+#change format to matrix
+pre <- as.matrix(pre)
+peak <- as.matrix(peak)
+#running matrix correlation
+pre_r <- rcorr(pre)
+peak_r <- rcorr(peak)
+#Save as dataframe
+pre_corr<-pre_r$r
+peak_corr<-peak_r$r
+pre_p<-pre_r$P
+peak_p<-peak_r$P
+#Write Table
+write.csv(pre_corr, "pre_r.csv")
+write.csv(peak_corr, "pre_r.csv")
+write.csv(pre_p, "pre_p.csv")
+write.csv(peak_p, "pre_p.csv")
+# Trait correlations with the raw data, comparing pre and post drought years
+#read in packages
+library(tidyverse)
+library(Hmisc)
+pre <- read.csv("Data/pre.csv", header = T)
+peak <- read.csv("Data/peak.csv", header = T)
+#Remove unnecessary columns
+pre <- select(pre, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+peak <-select(peak, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+#change format to matrix
+pre <- as.matrix(pre)
+peak <- as.matrix(peak)
+#running matrix correlation
+pre_r <- rcorr(pre)
+peak_r <- rcorr(peak)
+#Save as dataframe
+pre_corr<-pre_r$r
+peak_corr<-peak_r$r
+pre_p<-pre_r$P
+peak_p<-peak_r$P
+#Write Table
+write.csv(pre_corr, "pre_r.csv")
+write.csv(peak_corr, "pre_r.csv")
+write.csv(pre_p, "peak_p.csv")
+write.csv(peak_p, "peak_p.csv")
+# Trait correlations with the raw data, comparing pre and post drought years
+#read in packages
+library(tidyverse)
+library(Hmisc)
+pre <- read.csv("Data/pre.csv", header = T)
+peak <- read.csv("Data/peak.csv", header = T)
+#Remove unnecessary columns
+pre <- select(pre, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+peak <-select(peak, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+#change format to matrix
+pre <- as.matrix(pre)
+peak <- as.matrix(peak)
+#running matrix correlation
+pre_r <- rcorr(pre)
+peak_r <- rcorr(peak)
+#Save as dataframe
+pre_corr<-pre_r$r
+peak_corr<-peak_r$r
+pre_p<-pre_r$P
+peak_p<-peak_r$P
+#Write Table
+write.csv(pre_corr, "Tables/pre_r.csv")
+write.csv(peak_corr, "Tables/pre_r.csv")
+write.csv(pre_p, "Tables/peak_p.csv")
+write.csv(peak_p, "Tables/peak_p.csv")
+pre_p<-pre_r$P
+peak_p<-peak_r$P
+# Trait correlations with the raw data, comparing pre and post drought years
+#read in packages
+library(tidyverse)
+library(Hmisc)
+pre <- read.csv("Data/pre.csv", header = T)
+peak <- read.csv("Data/peak.csv", header = T)
+#Remove unnecessary columns
+pre <- select(pre, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+peak <-select(peak, Experiment_Date, SLA, Water_Content, Assimilation, Stomatal_Conductance)
+#change format to matrix
+pre <- as.matrix(pre)
+peak <- as.matrix(peak)
+#running matrix correlation
+pre_r <- rcorr(pre)
+peak_r <- rcorr(peak)
+#Save as dataframe
+pre_corr<-pre_r$r
+peak_corr<-peak_r$r
+pre_p<-pre_r$P
+peak_p<-peak_r$P
+#Write Table
+write.csv(pre_corr, "Tables/pre_r.csv")
+write.csv(pre_p, "Tables/pre_p.csv")
+write.csv(peak_corr, "Tables/peak_r.csv")
+write.csv(peak_p, "Tables/peak_p.csv")

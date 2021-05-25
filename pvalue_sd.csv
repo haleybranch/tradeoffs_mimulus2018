@@ -1,0 +1,11 @@
+Variable1,Variable2,Comparison,North,Centre,South,All
+Experiment_Date,SLA,df_sla,0.4785,0.2263,0.7285,0.397
+Experiment_Date,Water_Content,df_wc,0.5118,0.2465,0.7604,0.4145
+Experiment_Date,Assimilation,df_a,0.3295,0.3055,0.8186,0.4134
+Experiment_Date,Stomatal_Conductance,df_gs,0.3472,0.3575,0.7801,0.4139
+SLA,Assimilation,sla_a,0.6827,0.4535,0.639,0.577
+Stomatal_Conductance,SLA,gs_sla,0.6467,0.757,0.486,0.6126
+Water_Content,SLA,wc_sla,0.7492,0.5425,0.54990000000000006,0.4692
+Water_Content,Assimilation,wc_a,0.6363,0.6173,0.5106,0.5131
+Water_Content,Stomatal_Conductance,wc_gs,0.6814,0.541,0.5561,0.4901
+Stomatal_Conductance,Assimilation,gs_a,0.7039,0.4131,0.439,0.5015

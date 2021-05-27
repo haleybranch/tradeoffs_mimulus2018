@@ -8,11 +8,46 @@ library(cowplot)
 
 # Read in data
 all <- read.csv("Data/all.csv")
+all <- all %>%
+  separate(BlockDrought, c("Block", "Treatment"), "_")
 #place <- read.csv("Data/placements.csv")
 North <- all %>% filter(Region == "1.North") #subset of data
 North <- mutate_if(North, is.character, stringr::str_replace_all, pattern = "Pre", replacement = "1")
 North <- mutate_if(North, is.character, stringr::str_replace_all, pattern = "Peak", replacement = "2")
 North$Period <- as.factor(North$Period)
+
+North.preW <- filter(North, Period=="1")
+North.peakW  <- filter(North, Period=="2")
+North.preD <- filter(North, Period=="1")
+North.peakD  <- filter(North, Period=="2")
+
+
+
+##### Calculate the means 
+SLA_mean_n1 <- 220.4403
+DF_mean_n1 <- 99.84454
+A_mean_n1 <- 12.219802
+wc_mean_n1 <- 0.2204018
+gs_mean_n1 <- 0.4284275
+
+SLA_mean_n2 <- 223.2531
+DF_mean_n2 <- 101.05985
+A_mean_n2 <- 12.381693
+wc_mean_n2 <- 0.2190248
+gs_mean_n2<- 0.4417381
+
+SLA_mean_n3 <- 234.0118
+DF_mean_n3<- 96.78701
+A_mean_n3 <- 11.987256
+wc_mean_n3 <- 0.2101230
+gs_mean_n3 <- 0.4228428
+
+SLA_mean_n4 <- 224.3109
+DF_mean_n4 <- 95.93676
+A_mean_n4 <- 12.237744
+wc_mean_n4 <- 0.2103484
+gs_mean_n4<- 0.4127269
+
 
 #calculate ellipses
 elli_Period <- dataEllipse(North$Experiment_Date, North$Water_Content, North$Period, group.labels=North$Period,
@@ -40,6 +75,11 @@ df.wc <- ggplot(North, aes(Experiment_Date,Water_Content))+
         axis.text.y = element_text(size=14,face="bold"),
         axis.title.x = element_text(color="black", size=16, vjust = 0, face="bold"),
         axis.title.y = element_text(color="black", size=16,vjust = 0, face="bold"))
+df.wc <- df.wc +  geom_point(aes(x=DF_mean_n1, y=wc_mean_n1), size=3, colour="turquoise")#pre wet
+df.wc <- df.wc +  geom_point(aes(x=DF_mean_n2, y=wc_mean_n2), size=3, colour="lightcoral") #peak wet
+df.wc <- df.wc +  geom_point(aes(x=DF_mean_n3, y=wc_mean_n3), size=3, colour="turquoise4")#pre dry
+df.wc <- df.wc +  geom_point(aes(x=DF_mean_n4, y=wc_mean_n4), size=3, colour="firebrick1")#peak dry
+
 df.wc 
 
 #### DF by Ass
@@ -67,6 +107,12 @@ df.ass <- ggplot(North, aes(Experiment_Date,Assimilation))+
         axis.text.y = element_text(size=14,face="bold"),
         axis.title.x = element_text(color="black", size=16, vjust = 0, face="bold"),
         axis.title.y = element_text(color="black", size=16,vjust = 0, face="bold"))
+df.ass <- df.ass +  geom_point(aes(x=DF_mean_n1, y=A_mean_n1), size=3, colour="turquoise")#pre wet
+df.ass <- df.ass +  geom_point(aes(x=DF_mean_n2, y=A_mean_n2), size=3, colour="lightcoral") #peak wet
+df.ass <- df.ass +  geom_point(aes(x=DF_mean_n3, y=A_mean_n3), size=3, colour="turquoise4")#pre dry
+df.ass <- df.ass +  geom_point(aes(x=DF_mean_n4, y=A_mean_n4), size=3, colour="firebrick1")#peak dry
+
+
 df.ass 
 
 #### DF by gs
@@ -94,6 +140,11 @@ df.gs <- ggplot(North, aes(Experiment_Date,Stomatal_Conductance))+
         axis.text.y = element_text(size=14,face="bold"),
         axis.title.x = element_text(color="black", size=16, vjust = 0, face="bold"),
         axis.title.y = element_text(color="black", size=16,vjust = 0, face="bold"))
+df.gs <- df.gs +  geom_point(aes(x=DF_mean_n1, y=gs_mean_n1), size=3, colour="turquoise")#pre wet
+df.gs <- df.gs +  geom_point(aes(x=DF_mean_n2, y=gs_mean_n2), size=3, colour="lightcoral") #peak wet
+df.gs <- df.gs +  geom_point(aes(x=DF_mean_n3, y=gs_mean_n3), size=3, colour="turquoise4")#pre dry
+df.gs <- df.gs +  geom_point(aes(x=DF_mean_n4, y=gs_mean_n4), size=3, colour="firebrick1")#peak dry
+
 df.gs 
 
 #### DF by SLA
@@ -121,6 +172,12 @@ df.sla <- ggplot(North, aes(Experiment_Date,SLA))+
         axis.text.y = element_text(size=14,face="bold"),
         axis.title.x = element_text(color="black", size=16, vjust = 0, face="bold"),
         axis.title.y = element_text(color="black", size=16,vjust = 0, face="bold"))
+df.sla <- df.sla +  geom_point(aes(x=DF_mean_n1, y=SLA_mean_n1), size=3, colour="turquoise")#pre wet
+df.sla <- df.sla +  geom_point(aes(x=DF_mean_n2, y=SLA_mean_n2), size=3, colour="lightcoral") #peak wet
+df.sla <- df.sla +  geom_point(aes(x=DF_mean_n3, y=SLA_mean_n3), size=3, colour="turquoise4")#pre dry
+df.sla <- df.sla +  geom_point(aes(x=DF_mean_n4, y=SLA_mean_n4), size=3, colour="firebrick1")#peak dry
+
+
 df.sla
 
 #### WC by Ass
@@ -148,6 +205,12 @@ wc.ass <- ggplot(North, aes(Water_Content,Assimilation))+
         axis.text.y = element_text(size=14,face="bold"),
         axis.title.x = element_text(color="black", size=16, vjust = 0, face="bold"),
         axis.title.y = element_text(color="black", size=16,vjust = 0, face="bold"))
+wc.ass <- wc.ass +  geom_point(aes(x=wc_mean_n1, y=A_mean_n1), size=3, colour="turquoise")#pre wet
+wc.ass <- wc.ass +  geom_point(aes(x=wc_mean_n2, y=A_mean_n2), size=3, colour="lightcoral") #peak wet
+wc.ass <- wc.ass +  geom_point(aes(x=wc_mean_n3, y=A_mean_n3), size=3, colour="turquoise4")#pre dry
+wc.ass <- wc.ass +  geom_point(aes(x=wc_mean_n4, y=A_mean_n4), size=3, colour="firebrick1")#peak dry
+
+
 wc.ass 
 
 #### WC by gs
@@ -175,6 +238,11 @@ wc.gs <- ggplot(North, aes(Water_Content,Stomatal_Conductance))+
         axis.text.y = element_text(size=14,face="bold"),
         axis.title.x = element_text(color="black", size=16, vjust = 0, face="bold"),
         axis.title.y = element_text(color="black", size=16,vjust = 0, face="bold"))
+wc.gs <- wc.gs +  geom_point(aes(x=wc_mean_n1, y=gs_mean_n1), size=3, colour="turquoise")#pre wet
+wc.gs <- wc.gs +  geom_point(aes(x=wc_mean_n2, y=gs_mean_n2), size=3, colour="lightcoral") #peak wet
+wc.gs <- wc.gs +  geom_point(aes(x=wc_mean_n3, y=gs_mean_n3), size=3, colour="turquoise4")#pre dry
+wc.gs <- wc.gs +  geom_point(aes(x=wc_mean_n4, y=gs_mean_n4), size=3, colour="firebrick1")#peak dry
+
 wc.gs 
 
 #### WC by SLA
@@ -202,6 +270,12 @@ wc.sla <- ggplot(North, aes(Water_Content,SLA))+
         axis.text.y = element_text(size=14,face="bold"),
         axis.title.x = element_text(color="black", size=16, vjust = 0, face="bold"),
         axis.title.y = element_text(color="black", size=16,vjust = 0, face="bold"))
+wc.sla <- wc.sla +  geom_point(aes(x=wc_mean_n1, y=SLA_mean_n1), size=3, colour="turquoise")#pre wet
+wc.sla <- wc.sla +  geom_point(aes(x=wc_mean_n2, y=SLA_mean_n2), size=3, colour="lightcoral") #peak wet
+wc.sla <- wc.sla +  geom_point(aes(x=wc_mean_n3, y=SLA_mean_n3), size=3, colour="turquoise4")#pre dry
+wc.sla <- wc.sla +  geom_point(aes(x=wc_mean_n4, y=SLA_mean_n4), size=3, colour="firebrick1")#peak dry
+
+
 wc.sla 
 
 #### SLA by Ass
@@ -229,6 +303,11 @@ sla.ass <- ggplot(North, aes(SLA,Assimilation))+
         axis.text.y = element_text(size=14,face="bold"),
         axis.title.x = element_text(color="black", size=16, vjust = 0, face="bold"),
         axis.title.y = element_text(color="black", size=16,vjust = 0, face="bold"))
+sla.ass <- sla.ass +  geom_point(aes(x=SLA_mean_n1, y=A_mean_n1), size=3, colour="turquoise")#pre wet
+sla.ass <- sla.ass +  geom_point(aes(x=SLA_mean_n2, y=A_mean_n2), size=3, colour="lightcoral") #peak wet
+sla.ass <- sla.ass +  geom_point(aes(x=SLA_mean_n3, y=A_mean_n3), size=3, colour="turquoise4")#pre dry
+sla.ass <- sla.ass +  geom_point(aes(x=SLA_mean_n4, y=A_mean_n4), size=3, colour="firebrick1")#peak dry
+
 sla.ass 
 
 
@@ -257,6 +336,12 @@ gs.sla <- ggplot(North, aes(Stomatal_Conductance,SLA))+
         axis.text.y = element_text(size=14,face="bold"),
         axis.title.x = element_text(color="black", size=16, vjust = 0, face="bold"),
         axis.title.y = element_text(color="black", size=16,vjust = 0, face="bold"))
+gs.sla <- gs.sla +  geom_point(aes(x=gs_mean_n1, y=SLA_mean_n1), size=3, colour="turquoise")#pre wet
+gs.sla <- gs.sla +  geom_point(aes(x=gs_mean_n2, y=SLA_mean_n2), size=3, colour="lightcoral") #peak wet
+gs.sla <- gs.sla +  geom_point(aes(x=gs_mean_n3, y=SLA_mean_n3), size=3, colour="turquoise4")#pre dry
+gs.sla <- gs.sla +  geom_point(aes(x=gs_mean_n4, y=SLA_mean_n4), size=3, colour="firebrick1")#peak dry
+
+
 gs.sla 
 
 
@@ -286,6 +371,12 @@ gs.ass <- ggplot(North, aes(Stomatal_Conductance,Assimilation))+
         axis.text.y = element_text(size=14,face="bold"),
         axis.title.x = element_text(color="black", size=16, vjust = 0, face="bold"),
         axis.title.y = element_text(color="black", size=16,vjust = 0, face="bold"))
+gs.ass <- gs.ass +  geom_point(aes(x=gs_mean_n1, y=A_mean_n1), size=3, colour="turquoise")#pre wet
+gs.ass <- gs.ass +  geom_point(aes(x=gs_mean_n2, y=A_mean_n2), size=3, colour="lightcoral") #peak wet
+gs.ass <- gs.ass +  geom_point(aes(x=gs_mean_n3, y=A_mean_n3), size=3, colour="turquoise4")#pre dry 
+gs.ass <- gs.ass +  geom_point(aes(x=gs_mean_n4, y=A_mean_n4), size=3, colour="firebrick1")#peak dry
+
+
 gs.ass
 
 # cowplot export 10 by 16

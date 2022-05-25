@@ -47,6 +47,11 @@ region.means <- all %>% group_by(Region.period, Region,Period) %>%
                mean, na.rm=TRUE) 
 region.means <-ungroup(region.means)
 
+region.pcmeans <- all.pc %>% group_by(Region.period, Region,Period) %>% 
+  summarise_at(c("Dim.1", "Dim.2", "Dim.3", "Dim.4", "Dim.5"), 
+               mean, na.rm=TRUE) 
+region.pcmeans <-ungroup(region.pcmeans)
+
 #Get % variation explained by PC axes
 pc1 <- prcomp(na.omit(all[,c("Experiment_Date","Water_Content","SLA","Stomatal_Conductance","Assimilation")]), scale=T)
 summary(pc1)

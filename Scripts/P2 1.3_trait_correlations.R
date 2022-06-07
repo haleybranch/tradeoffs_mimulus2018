@@ -18,6 +18,12 @@ pre$Time <- "Pre"
 peak$Time <- "Peak"
 dat <- rbind(pre, peak)
 
+#Summaries for plotting
+dat.means <- dat %>% 
+  group_by(Time) %>% 
+  summarise_each(funs(mean(., na.rm=T), n = sum(!is.na(.)), se = sd(., na.rm=T)/sqrt(sum(!is.na(.)))), Experiment_Date:Stomatal_Conductance)
+
+
 #Change format to matrix
 pre <- pre %>% select(-Time)
 pre <- as.matrix(pre)
@@ -56,6 +62,11 @@ cocor(~ Assimilation + Stomatal_Conductance | Assimilation + Stomatal_Conductanc
 
 SLAWC <- ggplot(dat, aes(SLA, Water_Content, color=Time)) +
   geom_point(alpha=0.3) +
+  geom_point(data=dat.means, aes(x=SLA_mean, y=Water_Content_mean), size = 3, shape = 17) + 
+  geom_segment(data=dat.means, aes(x=SLA_mean, y=Water_Content_mean, xend=SLA_mean+SLA_se, yend=Water_Content_mean)) + 
+  geom_segment(data=dat.means, aes(x=SLA_mean, y=Water_Content_mean, xend=SLA_mean-SLA_se, yend=Water_Content_mean)) + 
+  geom_segment(data=dat.means, aes(x=SLA_mean, y=Water_Content_mean, xend=SLA_mean, yend=Water_Content_mean+Water_Content_se)) + 
+  geom_segment(data=dat.means, aes(x=SLA_mean, y=Water_Content_mean, xend=SLA_mean, yend=Water_Content_mean-Water_Content_se)) + 
   stat_ellipse() +
   xlab("Specific leaf area") +
   ylab("Water content (%)") +
@@ -63,6 +74,11 @@ SLAWC <- ggplot(dat, aes(SLA, Water_Content, color=Time)) +
 
 SLAFT <- ggplot(dat, aes(SLA, Experiment_Date, color=Time)) +
   geom_point(alpha=0.3) +
+  geom_point(data=dat.means, aes(x=SLA_mean, y=Experiment_Date_mean), size = 3, shape = 17) + 
+  geom_segment(data=dat.means, aes(x=SLA_mean, y=Experiment_Date_mean, xend=SLA_mean+SLA_se, yend=Experiment_Date_mean)) + 
+  geom_segment(data=dat.means, aes(x=SLA_mean, y=Experiment_Date_mean, xend=SLA_mean-SLA_se, yend=Experiment_Date_mean)) + 
+  geom_segment(data=dat.means, aes(x=SLA_mean, y=Experiment_Date_mean, xend=SLA_mean, yend=Experiment_Date_mean+Experiment_Date_se)) + 
+  geom_segment(data=dat.means, aes(x=SLA_mean, y=Experiment_Date_mean, xend=SLA_mean, yend=Experiment_Date_mean-Experiment_Date_se)) + 
   stat_ellipse() +
   xlab("Specific leaf area") +
   ylab("Date of first flower") +
@@ -70,6 +86,11 @@ SLAFT <- ggplot(dat, aes(SLA, Experiment_Date, color=Time)) +
 
 SLAA <- ggplot(dat, aes(SLA, Assimilation, color=Time)) +
   geom_point(alpha=0.3) +
+  geom_point(data=dat.means, aes(x=SLA_mean, y=Assimilation_mean), size = 3, shape = 17) + 
+  geom_segment(data=dat.means, aes(x=SLA_mean, y=Assimilation_mean, xend=SLA_mean+SLA_se, yend=Assimilation_mean)) + 
+  geom_segment(data=dat.means, aes(x=SLA_mean, y=Assimilation_mean, xend=SLA_mean-SLA_se, yend=Assimilation_mean)) + 
+  geom_segment(data=dat.means, aes(x=SLA_mean, y=Assimilation_mean, xend=SLA_mean, yend=Assimilation_mean+Assimilation_se)) + 
+  geom_segment(data=dat.means, aes(x=SLA_mean, y=Assimilation_mean, xend=SLA_mean, yend=Assimilation_mean-Assimilation_se)) + 
   stat_ellipse() +
   xlab("Specific leaf area") +
   ylab("Carbon assimilation rate") +
@@ -77,6 +98,11 @@ SLAA <- ggplot(dat, aes(SLA, Assimilation, color=Time)) +
 
 SLAg <- ggplot(dat, aes(SLA, Stomatal_Conductance, color=Time)) +
   geom_point(alpha=0.3) +
+  geom_point(data=dat.means, aes(x=SLA_mean, y=Stomatal_Conductance_mean), size = 3, shape = 17) + 
+  geom_segment(data=dat.means, aes(x=SLA_mean, y=Stomatal_Conductance_mean, xend=SLA_mean+SLA_se, yend=Stomatal_Conductance_mean)) + 
+  geom_segment(data=dat.means, aes(x=SLA_mean, y=Stomatal_Conductance_mean, xend=SLA_mean-SLA_se, yend=Stomatal_Conductance_mean)) + 
+  geom_segment(data=dat.means, aes(x=SLA_mean, y=Stomatal_Conductance_mean, xend=SLA_mean, yend=Stomatal_Conductance_mean+Stomatal_Conductance_se)) + 
+  geom_segment(data=dat.means, aes(x=SLA_mean, y=Stomatal_Conductance_mean, xend=SLA_mean, yend=Stomatal_Conductance_mean-Stomatal_Conductance_se)) + 
   stat_ellipse() +
   xlab("Specific leaf area") +
   ylab("Stomatal conductance") +
@@ -84,6 +110,11 @@ SLAg <- ggplot(dat, aes(SLA, Stomatal_Conductance, color=Time)) +
 
 WCFT <- ggplot(dat, aes(Water_Content, Experiment_Date, color=Time)) +
   geom_point(alpha=0.3) +
+  geom_point(data=dat.means, aes(x=Water_Content_mean, y=Experiment_Date_mean), size = 3, shape = 17) + 
+  geom_segment(data=dat.means, aes(x=Water_Content_mean, y=Experiment_Date_mean, xend=Water_Content_mean+Water_Content_se, yend=Experiment_Date_mean)) + 
+  geom_segment(data=dat.means, aes(x=Water_Content_mean, y=Experiment_Date_mean, xend=Water_Content_mean-Water_Content_se, yend=Experiment_Date_mean)) + 
+  geom_segment(data=dat.means, aes(x=Water_Content_mean, y=Experiment_Date_mean, xend=Water_Content_mean, yend=Experiment_Date_mean+Experiment_Date_se)) + 
+  geom_segment(data=dat.means, aes(x=Water_Content_mean, y=Experiment_Date_mean, xend=Water_Content_mean, yend=Experiment_Date_mean-Experiment_Date_se)) + 
   stat_ellipse() +
   xlab("Water content (%") +
   ylab("Date of first flower") +
@@ -91,6 +122,11 @@ WCFT <- ggplot(dat, aes(Water_Content, Experiment_Date, color=Time)) +
 
 WCA <- ggplot(dat, aes(Water_Content, Assimilation, color=Time)) +
   geom_point(alpha=0.3) +
+  geom_point(data=dat.means, aes(x=Water_Content_mean, y=Assimilation_mean), size = 3, shape = 17) + 
+  geom_segment(data=dat.means, aes(x=Water_Content_mean, y=Assimilation_mean, xend=Water_Content_mean+Water_Content_se, yend=Assimilation_mean)) + 
+  geom_segment(data=dat.means, aes(x=Water_Content_mean, y=Assimilation_mean, xend=Water_Content_mean-Water_Content_se, yend=Assimilation_mean)) + 
+  geom_segment(data=dat.means, aes(x=Water_Content_mean, y=Assimilation_mean, xend=Water_Content_mean, yend=Assimilation_mean+Assimilation_se)) + 
+  geom_segment(data=dat.means, aes(x=Water_Content_mean, y=Assimilation_mean, xend=Water_Content_mean, yend=Assimilation_mean-Assimilation_se)) + 
   stat_ellipse() +
   xlab("Water content (%)") +
   ylab("Carbon assimilation rate") +
@@ -98,6 +134,11 @@ WCA <- ggplot(dat, aes(Water_Content, Assimilation, color=Time)) +
 
 WCg <- ggplot(dat, aes(Water_Content, Stomatal_Conductance, color=Time)) +
   geom_point(alpha=0.3) +
+  geom_point(data=dat.means, aes(x=Water_Content_mean, y=Stomatal_Conductance_mean), size = 3, shape = 17) + 
+  geom_segment(data=dat.means, aes(x=Water_Content_mean, y=Stomatal_Conductance_mean, xend=Water_Content_mean+Water_Content_se, yend=Stomatal_Conductance_mean)) + 
+  geom_segment(data=dat.means, aes(x=Water_Content_mean, y=Stomatal_Conductance_mean, xend=Water_Content_mean-Water_Content_se, yend=Stomatal_Conductance_mean)) + 
+  geom_segment(data=dat.means, aes(x=Water_Content_mean, y=Stomatal_Conductance_mean, xend=Water_Content_mean, yend=Stomatal_Conductance_mean+Stomatal_Conductance_se)) + 
+  geom_segment(data=dat.means, aes(x=Water_Content_mean, y=Stomatal_Conductance_mean, xend=Water_Content_mean, yend=Stomatal_Conductance_mean-Stomatal_Conductance_se)) + 
   stat_ellipse() +
   xlab("Water content (%)") +
   ylab("Stomatal conductance") +
@@ -105,6 +146,11 @@ WCg <- ggplot(dat, aes(Water_Content, Stomatal_Conductance, color=Time)) +
 
 FTA <- ggplot(dat, aes(Experiment_Date, Assimilation, color=Time)) +
   geom_point(alpha=0.3) +
+  geom_point(data=dat.means, aes(x=Experiment_Date_mean, y=Assimilation_mean), size = 3, shape = 17) + 
+  geom_segment(data=dat.means, aes(x=Experiment_Date_mean, y=Assimilation_mean, xend=Experiment_Date_mean+Experiment_Date_se, yend=Assimilation_mean)) + 
+  geom_segment(data=dat.means, aes(x=Experiment_Date_mean, y=Assimilation_mean, xend=Experiment_Date_mean-Experiment_Date_se, yend=Assimilation_mean)) + 
+  geom_segment(data=dat.means, aes(x=Experiment_Date_mean, y=Assimilation_mean, xend=Experiment_Date_mean, yend=Assimilation_mean+Assimilation_se)) + 
+  geom_segment(data=dat.means, aes(x=Experiment_Date_mean, y=Assimilation_mean, xend=Experiment_Date_mean, yend=Assimilation_mean-Assimilation_se)) + 
   stat_ellipse() +
   xlab("Date of first flower") +
   ylab("Carbon assimilation rate") +
@@ -112,6 +158,11 @@ FTA <- ggplot(dat, aes(Experiment_Date, Assimilation, color=Time)) +
 
 FTg <- ggplot(dat, aes(Experiment_Date, Stomatal_Conductance, color=Time)) +
   geom_point(alpha=0.3) +
+  geom_point(data=dat.means, aes(x=Experiment_Date_mean, y=Stomatal_Conductance_mean), size = 3, shape = 17) + 
+  geom_segment(data=dat.means, aes(x=Experiment_Date_mean, y=Stomatal_Conductance_mean, xend=Experiment_Date_mean+Experiment_Date_se, yend=Stomatal_Conductance_mean)) + 
+  geom_segment(data=dat.means, aes(x=Experiment_Date_mean, y=Stomatal_Conductance_mean, xend=Experiment_Date_mean-Experiment_Date_se, yend=Stomatal_Conductance_mean)) + 
+  geom_segment(data=dat.means, aes(x=Experiment_Date_mean, y=Stomatal_Conductance_mean, xend=Experiment_Date_mean, yend=Stomatal_Conductance_mean+Stomatal_Conductance_se)) + 
+  geom_segment(data=dat.means, aes(x=Experiment_Date_mean, y=Stomatal_Conductance_mean, xend=Experiment_Date_mean, yend=Stomatal_Conductance_mean-Stomatal_Conductance_se)) + 
   stat_ellipse() +
   xlab("Date of first flower") +
   ylab("Stomatal conductance") +
@@ -119,6 +170,11 @@ FTg <- ggplot(dat, aes(Experiment_Date, Stomatal_Conductance, color=Time)) +
 
 Ag <- ggplot(dat, aes(Assimilation, Stomatal_Conductance, color=Time)) +
   geom_point(alpha=0.3) +
+  geom_point(data=dat.means, aes(x=Assimilation_mean, y=Stomatal_Conductance_mean), size = 3, shape = 17) + 
+  geom_segment(data=dat.means, aes(x=Assimilation_mean, y=Stomatal_Conductance_mean, xend=Assimilation_mean+Assimilation_se, yend=Stomatal_Conductance_mean)) + 
+  geom_segment(data=dat.means, aes(x=Assimilation_mean, y=Stomatal_Conductance_mean, xend=Assimilation_mean-Assimilation_se, yend=Stomatal_Conductance_mean)) + 
+  geom_segment(data=dat.means, aes(x=Assimilation_mean, y=Stomatal_Conductance_mean, xend=Assimilation_mean, yend=Stomatal_Conductance_mean+Stomatal_Conductance_se)) + 
+  geom_segment(data=dat.means, aes(x=Assimilation_mean, y=Stomatal_Conductance_mean, xend=Assimilation_mean, yend=Stomatal_Conductance_mean-Stomatal_Conductance_se)) + 
   stat_ellipse() +
   xlab("Carbon assimilation rate") +
   ylab("Stomatal conductance") +
